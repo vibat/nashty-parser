@@ -29,6 +29,9 @@ def parse_thread(url):
 
             posts += soup.findAll("div", {"class": "content"})
 
+    # clean up the posts
+    posts = [x.get_text("\n") for x in posts]
+
     return [game_num, posts]
 
 
@@ -105,7 +108,7 @@ def print_guesses(guesses):
 
 
 def prompt(post, votes, players):
-    print post
+    print post + "\n"
 
     guesses = best_guesses(votes, players)
 
