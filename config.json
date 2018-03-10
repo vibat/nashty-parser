@@ -1,0 +1,125 @@
+{
+  "players": [
+    {
+      "id": 1,
+      "firstname": "T.J.",
+      "lastname": "Warren",
+      "aliases": [
+        "T.J",
+        "TJ",
+        "TJ.",
+        "T.J."
+      ]
+    },
+    {
+      "id": 2,
+      "firstname": "Devin",
+      "lastname": "Booker",
+      "aliases": [
+        "Book",
+        "Book3r"
+      ]
+    },
+    {
+      "id": 3,
+      "firstname": "Josh",
+      "lastname": "Jackson",
+      "aliases": [
+        "JJ"
+      ]
+    },
+    {
+      "id": 4,
+      "firstname": "Dragan",
+      "lastname": "Bender",
+      "aliases": [
+        "B3nd3r"
+      ]
+    },
+    {
+      "id": 5,
+      "firstname": "Marquese",
+      "lastname": "Chriss",
+      "aliases": [
+        "Quese"
+      ]
+    },
+    {
+      "id": 6,
+      "firstname": "Tyson",
+      "lastname": "Chandler",
+      "aliases": [
+      ]
+    },
+    {
+      "id": 7,
+      "firstname": "Troy",
+      "lastname": "Daniels",
+      "aliases": [
+      ]
+    },
+    {
+      "id": 8,
+      "firstname": "Jared",
+      "lastname": "Dudley",
+      "aliases": [
+        "Duds"
+      ]
+    },
+    {
+      "id": 9,
+      "firstname": "Shaquille",
+      "lastname": "Harrison",
+      "aliases": [
+        "Shaq"
+      ]
+    },
+    {
+      "id": 10,
+      "firstname": "Alex",
+      "lastname": "Len",
+      "aliases": [
+        "Olixey"
+      ]
+    },
+    {
+      "id": 11,
+      "firstname": "Elfrid",
+      "lastname": "Payton",
+      "aliases": [
+        "EP"
+      ]
+    },
+    {
+      "id": 12,
+      "firstname": "Alec",
+      "lastname": "Peters",
+      "aliases": [
+      ]
+    },
+    {
+      "id": 13,
+      "firstname": "Davon",
+      "lastname": "Reed",
+      "aliases": [
+      ]
+    },
+    {
+      "id": 14,
+      "firstname": "Tyler",
+      "lastname": "Ulis",
+      "aliases": [
+      ]
+    },
+    {
+      "id": 15,
+      "firstname": "Jay",
+      "lastname": "Triano",
+      "aliases": [
+        "Coach"
+      ]
+    }
+  ],
+  "ignore": [
+  ]
+}
