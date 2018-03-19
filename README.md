@@ -12,3 +12,7 @@ adds the vote value to specified player
 ```s - skip``` skips the post
 
 ```c - confirm``` confirm the current vote configuration
+
+``` p - players``` prints out the players and their ids
+
+``` q - quit``` quits the application

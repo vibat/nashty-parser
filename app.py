@@ -6,6 +6,7 @@ import json
 
 POSTS_PER_PAGE = 20
 CONFIG_FILE = "config.json"
+output_filepath = "out.txt"
 
 Soup = bs4.BeautifulSoup
 
@@ -39,13 +40,18 @@ def build_scores(thread_info):
     with open(CONFIG_FILE) as config_file:
         config = json.load(config_file)
         players = config["players"]
+        global output_filepath
+        try:
+            output_filepath = config["output-filepath"]
+        except KeyError:
+            pass
 
     [game_num, posts] = thread_info
 
     # process the posts
     for post in posts:
         # get votes
-        votes = re.findall("(-?[0-3](?:.[0-9]+)?)\W*\s+([A-Z]+\w*)", str(post))
+        votes = re.findall("(-?[0-3](?:.[0-9]+)?)\W*\s+([A-Z]+.*)", str(post))
 
         # prompt the user for each post
         prompt(post, votes, players)
@@ -54,7 +60,7 @@ def build_scores(thread_info):
     players = sorted(players, key=lambda p: get_score(p), reverse=True)
 
     # and add to out.txt
-    with open("out.txt", "a") as text:
+    with open(output_filepath, "a") as text:
         text.write("Game " + game_num + "\n")
 
         for player in players:
@@ -87,10 +93,13 @@ def match_player(player_string, players):
 
 def best_guesses(votes, players):
     guesses = []
-    for (score_str, player_str) in votes:
-        player = match_player(player_str, players)
-        if player is not None:
-            guesses.append({"player": player, "score": float(score_str)})
+    for (score_str, player_str_array) in votes:
+        for player_str in player_str_array.split(" "):
+            player = match_player(player_str, players)
+            if player is not None:
+                guesses.append({"player": player, "score": float(score_str)})
+                break
+
     return guesses
 
 
@@ -102,13 +111,17 @@ def get_player(pid, players):
 
 
 def print_guesses(guesses):
+    print "Parsed votes:"
+    print "********************"
+
+    guesses = sorted(guesses, key=lambda g: g["score"], reverse=True)
     for guess in guesses:
         print (str(int(guess["score"])) if guess["score"].is_integer() else "%.1f" % guess["score"]) + " " + \
               guess["player"]["firstname"] + " " + guess["player"]["lastname"]
 
 
 def prompt(post, votes, players):
-    print post + "\n"
+    print "********************\n" + post + "\n********************"
 
     guesses = best_guesses(votes, players)
 
@@ -141,6 +154,9 @@ def prompt(post, votes, players):
                 if guess["player"]["id"] == int(pid):
                     guesses.remove(guess)
                     break
+        elif cmd == "p" or cmd == "players":
+            for player in players:
+                print str(player["id"]) + " " + player["firstname"] + " " + player["lastname"]
         elif cmd == "q":
             sys.exit(0)
 
