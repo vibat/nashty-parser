@@ -51,7 +51,11 @@ def build_scores(thread_info):
     # process the posts
     for post in posts:
         # get votes
-        votes = re.findall("(-?[0-3](?:.[0-9]+)?)\W*\s+([A-Z]+.*)", str(post))
+
+        # vote score ahead (standard)
+        votes = re.findall("(-?[0-3](?:.[0-9]+)?)\W*[ \t]+([A-Z]+.*)", str(post))
+        # vote score trailing
+        votes += re.findall("([A-Z]+.*)\W*[ \t]+(-?[0-3](?:.[0-9]+)?)", str(post))
 
         # prompt the user for each post
         prompt(post, votes, players)
@@ -93,7 +97,12 @@ def match_player(player_string, players):
 
 def best_guesses(votes, players):
     guesses = []
-    for (score_str, player_str_array) in votes:
+    for vote in votes:
+        try:
+            float(vote[0])
+            (score_str, player_str_array) = (vote[0], vote[1])
+        except ValueError:
+            (score_str, player_str_array) = (vote[1], vote[0])
         for player_str in player_str_array.split(" "):
             player = match_player(player_str, players)
             if player is not None:
