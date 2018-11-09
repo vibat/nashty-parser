@@ -1,7 +1,7 @@
 {
   "players": [
     {
-      "id": 1,
+      "id": 16,
       "firstname": "T.J.",
       "lastname": "Warren",
       "aliases": [
@@ -12,7 +12,7 @@
       ]
     },
     {
-      "id": 2,
+      "id": 5,
       "firstname": "Devin",
       "lastname": "Booker",
       "aliases": [
@@ -21,7 +21,7 @@
       ]
     },
     {
-      "id": 3,
+      "id": 13,
       "firstname": "Josh",
       "lastname": "Jackson",
       "aliases": [
@@ -37,89 +37,89 @@
       ]
     },
     {
-      "id": 5,
-      "firstname": "Marquese",
-      "lastname": "Chriss",
+      "id": 2,
+      "firstname": "Trevor",
+      "lastname": "Ariza",
       "aliases": [
-        "Quese"
+        "A3za"
+      ]
+    },
+    {
+      "id": 1,
+      "firstname": "Ryan",
+      "lastname": "Anderson",
+      "aliases": [
+        "Ryno"
+      ]
+    },
+    {
+      "id": 3,
+      "firstname": "Deandre",
+      "lastname": "Ayton",
+      "aliases": [
       ]
     },
     {
       "id": 6,
-      "firstname": "Tyson",
-      "lastname": "Chandler",
+      "firstname": "Mikal",
+      "lastname": "Bridges",
       "aliases": [
       ]
     },
     {
       "id": 7,
+      "firstname": "Isaiah",
+      "lastname": "Canaan",
+      "aliases": [
+      ]
+    },
+    {
+      "id": 10,
+      "firstname": "Jamal",
+      "lastname": "Crawford",
+      "aliases": [
+      ]
+    },
+    {
+      "id": 11,
       "firstname": "Troy",
       "lastname": "Daniels",
       "aliases": [
       ]
     },
     {
-      "id": 8,
-      "firstname": "Jared",
-      "lastname": "Dudley",
-      "aliases": [
-        "Duds"
-      ]
-    },
-    {
-      "id": 9,
-      "firstname": "Shaquille",
-      "lastname": "Harrison",
-      "aliases": [
-        "Shaq"
-      ]
-    },
-    {
-      "id": 10,
-      "firstname": "Alex",
-      "lastname": "Len",
-      "aliases": [
-        "Olixey"
-      ]
-    },
-    {
-      "id": 11,
-      "firstname": "Elfrid",
-      "lastname": "Payton",
-      "aliases": [
-        "EP"
-      ]
-    },
-    {
       "id": 12,
-      "firstname": "Alec",
-      "lastname": "Peters",
-      "aliases": [
-      ]
-    },
-    {
-      "id": 13,
-      "firstname": "Davon",
-      "lastname": "Reed",
+      "firstname": "Richaun",
+      "lastname": "Holmes",
       "aliases": [
       ]
     },
     {
       "id": 14,
-      "firstname": "Tyler",
-      "lastname": "Ulis",
+      "firstname": "De'Anthony",
+      "lastname": "Melton",
       "aliases": [
       ]
     },
     {
       "id": 15,
-      "firstname": "Jay",
-      "lastname": "Triano",
+      "firstname": "Elie",
+      "lastname": "Okobo",
       "aliases": [
-        "Coach"
       ]
     }
   ],
   "ignore": [
-  ]
+  ],
+  "scoring": {
+    "z_score_neg": -0.6,
+    "z_score_pos": 0.0,
+    "default_score": 6.0,
+    "scale_distance": 2.0,
+    "max_scale_score": 30
+  },
+  "sheet": {
+    "row_start" : 6,
+    "col_start" : 4
+  }
 }
