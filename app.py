@@ -6,6 +6,8 @@ import json
 from scipy import stats
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
+import urllib3
+
 
 POSTS_PER_PAGE = 20
 CONFIG_FILE = "config.json"
@@ -18,6 +20,7 @@ Soup = bs4.BeautifulSoup
 def parse_thread(url):
     posts = []
 
+    urllib3.disable_warnings()
     r = requests.get(url, verify=False)
 
     soup = Soup(r.text, "html.parser")
@@ -70,12 +73,15 @@ def build_votes(thread_info, margin):
         # get all votes
 
         # vote score ahead (standard)
-        votes = re.findall("([+-]?[0-3]?(?:.[0-9]+)?)\W*[ \t]+([A-Z]+.*)", str(post.encode('ascii','ignore')))
+        print re.findall("([+-]?[0-3]?(?:.[0-9]+)?)\W*[ \t]+([A-Z]+.*)", str(post.encode('ascii','ignore')))
+
+        votes = re.findall("([+-]?[0-9]?(?:.[0-9]+)?)\W*[ \t]+(?:for |to )?([A-z]+)", str(post.encode('ascii','ignore')))
+        print votes
         # vote score trailing
-        votes += re.findall("([A-Z]+.*)\W*[ \t]+([+-]?[0-3](?:.[0-9]+)?)", str(post.encode('ascii','ignore')))
+        votes += re.findall("([A-z]+)\W*[ \t]+([+-]?[0-9]?(?:.[0-9]+)?)", str(post.encode('ascii','ignore')))
 
         # prompt the user for each post
-        prompt(post, votes, players)
+        prompt(post, votes, players, margin)
 
     # sort the players
     players = sorted(players, key=lambda p: get_vote(p), reverse=True)
@@ -88,8 +94,8 @@ def build_votes(thread_info, margin):
         text.write("Game " + str(game_num) + "\n")
 
         for player in players:
-            text.write(player["firstname"] + " " + player["lastname"] + " Votes: " + player["vote"]
-                       + " Score: " + player["score"].encode('utf-8') + "\n")
+            text.write(player["firstname"] + " " + player["lastname"] + " Votes: " + str(player["vote"])
+                       + " Score: " + str(player["score"]) + "\n")
         text.write("\n")
 
 
@@ -111,24 +117,32 @@ def apply_votes(guesses):
 
 def match_player(player_string, players):
     for player in players:
-        if player_string in player["aliases"] or player_string == player["lastname"]:
+        if player_string.lower() in [x.lower() for x in player["aliases"]] \
+                or player_string.lower() == player["lastname"].lower():
             return player
     return None
 
 
-def best_guesses(votes, players):
+def best_guesses(votes, players, margin):
     guesses = []
     for vote in votes:
         try:
-            float(vote[0]) # cast to check if vote ahead or vote behind
+            float(vote[0])  # cast to check if vote ahead or vote behind
             (vote_str, player_str_array) = (vote[0], vote[1])
         except ValueError:
             try:
-                float(vote[1]) # confirm vote behind
+                float(vote[1])  # confirm vote behind
                 (vote_str, player_str_array) = (vote[1], vote[0])
             except ValueError:
                 # this is not an actual vote
                 continue
+        if float(vote_str) < 0 < margin:
+            # can't have a negative vote in wins
+            continue
+        if float(vote_str) > 3:
+            vote_str = 3
+        if float(vote_str) < -3:
+            vote_str = -3
         for player_str in player_str_array.split(" "):
             player = match_player(player_str, players)
             if player is not None:
@@ -184,7 +198,7 @@ def generate_scores(players, score_settings, margin):
     default_score = score_settings["default_score"]
     scale_distance = score_settings["scale_distance"]
     max_scale_score = score_settings["max_scale_score"]
-    scale_adjust = scale_distance*(margin/max_scale_score)
+    scale_adjust = scale_distance*(float(margin)/max_scale_score)
     print scale_adjust
 
     players = sorted(players, key=lambda g: g["vote"], reverse=True)
@@ -197,8 +211,10 @@ def generate_scores(players, score_settings, margin):
         if trim_z[i] != 0:
             if trim_z[i] in a:
                 players[i]["score"] = trim_z[i] * (default_score + scale_adjust) / sum(a)
-            elif trim_z[i] in b:
+            elif trim_z[i] in b and margin < 0:
                 players[i]["score"] = trim_z[i] * (-default_score + scale_adjust) / sum(b)
+            else:
+                players[i]["score"] = 0
         else:
             players[i]["score"] = 0
 
@@ -206,11 +222,11 @@ def generate_scores(players, score_settings, margin):
         print player
 
 
-def prompt(post, votes, players):
+def prompt(post, votes, players, margin):
 
     print "********************\n" + post.encode('utf-8') + "\n********************"
 
-    guesses = best_guesses(votes, players)
+    guesses = best_guesses(votes, players, margin)
 
     while True:
 
@@ -244,6 +260,8 @@ def prompt(post, votes, players):
         elif cmd == "p" or cmd == "players":
             for player in players:
                 print str(player["id"]) + " " + player["firstname"] + " " + player["lastname"]
+        elif cmd == "cl":
+            guesses = []
         elif cmd == "q":
             sys.exit(0)
 

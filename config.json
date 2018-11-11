@@ -25,7 +25,9 @@
       "firstname": "Josh",
       "lastname": "Jackson",
       "aliases": [
-        "JJ"
+        "JJ",
+        "Josh",
+        "Buston"
       ]
     },
     {
@@ -71,6 +73,7 @@
       "firstname": "Isaiah",
       "lastname": "Canaan",
       "aliases": [
+        "Cannan"
       ]
     },
     {
@@ -112,7 +115,7 @@
   "ignore": [
   ],
   "scoring": {
-    "z_score_neg": -0.6,
+    "z_score_neg": -0.5,
     "z_score_pos": 0.0,
     "default_score": 6.0,
     "scale_distance": 2.0,
