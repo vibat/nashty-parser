@@ -45,6 +45,21 @@ def parse_thread(url):
     return [game_num, posts]
 
 
+def parse_threads(url):
+    urllib3.disable_warnings()
+    r = requests.get(url, verify=False)
+
+    soup = Soup(r.text, "html.parser")
+
+    topics = []
+
+    # first page... need to request anyway to see how many pages we have
+    topics += soup.findAll("a", {"class": "topictitle"})
+
+    t = [re.search("<a class=\"topictitle\" href=\"\.(.+)\">(Nashty.*Game (\d+).*)<\/a>", str(x)) for x in topics]
+    threads = [(url+thread.group(1), thread.group(2), int(thread.group(3))) for thread in t if thread is not None]
+
+
 def build_votes(thread_info, margin):
     with open(CONFIG_FILE) as config_file:
         # load the config file and pull the players
@@ -276,4 +291,10 @@ def main():
     build_votes(thread_info, margin)
 
 
-main()
+try:
+    while True:
+        main()
+except KeyboardInterrupt:
+    print "Bye bye bye bye bye"
+    sys.exit(0)
+
